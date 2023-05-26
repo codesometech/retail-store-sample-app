@@ -20,12 +20,18 @@ package com.amazon.sample.orders;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.event.ApplicationPreparedEvent;
+import org.springframework.context.ApplicationListener;
+import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.instrument.classloading.InstrumentationLoadTimeWeaver;
 
 @SpringBootApplication
 public class OrdersApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(OrdersApplication.class, args);
+		final SpringApplication springApplication = new SpringApplication(OrdersApplication.class);
+
+		springApplication.run(OrdersApplication.class, args);
 	}
 
 }

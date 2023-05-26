@@ -25,9 +25,14 @@ import com.amazon.sample.ui.clients.catalog.RFC3339DateFormat;
 import com.amazon.sample.ui.clients.catalog.api.CatalogApi;
 import com.amazon.sample.ui.clients.checkout.api.CheckoutApi;
 import com.amazon.sample.ui.clients.orders.api.OrdersApi;
+import io.netty.channel.ChannelDuplexHandler;
+import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelOption;
+import io.netty.channel.ChannelPromise;
+import io.netty.handler.codec.http.*;
 import io.netty.handler.timeout.ReadTimeoutHandler;
 import io.netty.handler.timeout.WriteTimeoutHandler;
+import io.netty.util.CharsetUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -72,7 +77,8 @@ public class Clients {
         TcpClient tcpClient = TcpClient.create()
                 .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 1000) // Connection Timeout
                 .doOnConnected(connection ->
-                        connection.addHandlerLast(new ReadTimeoutHandler(10)) // Read Timeout
+                        connection.addHandlerFirst(new LoggingHandler())
+                                .addHandlerLast(new ReadTimeoutHandler(10)) // Read Timeout
                                 .addHandlerLast(new WriteTimeoutHandler(10))); // Write Timeout
 
         ExchangeStrategies strategies = ExchangeStrategies
@@ -159,4 +165,36 @@ public class Clients {
         return new CheckoutApi(new com.amazon.sample.ui.clients.checkout.ApiClient(this.createWebClient(mapper, webClientBuilder), mapper, createDefaultDateFormat())
                 .setBasePath(this.checkoutEndpoint));
     }
+
+    private static class LoggingHandler extends ChannelDuplexHandler {
+
+        @Override public void write(ChannelHandlerContext ctx, Object msg, ChannelPromise promise) throws Exception {
+            if (msg instanceof FullHttpRequest request) {
+                log.info("DOWNSTREAM  REQUEST: METHOD: {}, URI: {}, BODY: {}",
+                        request.method(), request.uri(), request.content().toString(CharsetUtil.UTF_8));
+            } else if (msg instanceof HttpRequest request) {
+                log.info("DOWNSTREAM  REQUEST: METHOD: {}, URI: {}, HEADERS: {}",
+                        request.method(), request.uri(), request.headers());
+            } else if (msg instanceof FullHttpMessage message) {
+                log.info("DOWNSTREAM  REQUEST: BODY: {}",
+                        message.content().toString());
+            }
+            super.write(ctx, msg, promise);
+        }
+
+        @Override public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+            if (msg instanceof FullHttpResponse response) {
+                log.info("DOWNSTREAM RESPONSE: STATUS: {}, BODY: {}, HEADERS: {}",
+                        response.status().code(), response.content().toString());
+            } else if (msg instanceof HttpResponse response) {
+                log.info("DOWNSTREAM RESPONSE: STATUS: {}, HEADERS: {}",
+                        response.status().code(), response.headers());
+            } else if (!(msg instanceof LastHttpContent) && msg instanceof HttpContent httpContent) {
+                log.info("DOWNSTREAM RESPONSE: BODY: {}",
+                        httpContent.content().toString());
+            }
+            super.channelRead(ctx, msg);
+        }
+    }
+
 }

@@ -12,6 +12,7 @@ spring:
 
 logging:
   level:
+    root: DEBUG
     org:
       hibernate:
         stat: debug
