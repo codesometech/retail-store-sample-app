@@ -78,7 +78,9 @@ func (c *Controller) GetProducts(ctx *gin.Context) {
 		return
 	}
 
-	products, err := c.api.GetProducts(tags, order, page, size, ctx.Request.Context())
+	searchText := ctx.Query("searchText")
+
+	products, err := c.api.GetProducts(tags, order, page, size, searchText, ctx.Request.Context())
 	if err != nil {
 		httputil.NewError(ctx, http.StatusNotFound, err)
 		return
@@ -131,7 +133,9 @@ func (c *Controller) CatalogSize(ctx *gin.Context) {
 		tags = []string{}
 	}
 
-	count, err := c.api.GetSize(tags, ctx.Request.Context())
+	searchText := ctx.Query("searchText")
+
+	count, err := c.api.GetSize(tags, searchText, ctx.Request.Context())
 	if err != nil {
 		httputil.NewError(ctx, http.StatusNotFound, err)
 		return

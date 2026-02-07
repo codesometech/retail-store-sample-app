@@ -147,7 +147,8 @@ public class MockCatalogService implements CatalogService {
     String tag,
     String order,
     int page,
-    int size
+    int size,
+    String searchText
   ) {
     System.out.println("Tag is " + tag);
     List<Product> productList =
@@ -155,6 +156,15 @@ public class MockCatalogService implements CatalogService {
         .stream()
         .sorted(Comparator.comparing(Product::getName))
         .filter(product -> tag.isBlank() || product.hasTag(tag))
+        .filter(product ->
+          searchText == null ||
+          searchText.isBlank() ||
+          product.getName().toLowerCase().contains(searchText.toLowerCase()) ||
+          product
+            .getDescription()
+            .toLowerCase()
+            .contains(searchText.toLowerCase())
+        )
         .collect(Collectors.toList());
 
     int end = page * size;
@@ -162,13 +172,19 @@ public class MockCatalogService implements CatalogService {
     if (end > productList.size()) {
       end = productList.size();
     }
+    
+    // Handle case where pagination is out of bounds due to filtering
+    int start = (page - 1) * size;
+    if (start >= productList.size()) {
+        return Mono.just(new ProductPage(page, size, productList.size(), List.of()));
+    }
 
     return Mono.just(
       new ProductPage(
         page,
         size,
         productList.size(),
-        productList.subList((page - 1) * size, end)
+        productList.subList(start, end)
       )
     );
   }

@@ -23,6 +23,11 @@ paths:
           description: Tagged products to include
           schema:
             type: string
+        - name: searchText
+          in: query
+          description: Search text for products
+          schema:
+            type: string
         - name: order
           in: query
           description: Order of response
@@ -113,6 +118,11 @@ paths:
         - name: tags
           in: query
           description: Tagged products to include
+          schema:
+            type: string
+        - name: searchText
+          in: query
+          description: Search text for products
           schema:
             type: string
       responses:

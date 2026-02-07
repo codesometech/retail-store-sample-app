@@ -44,13 +44,15 @@ public class KiotaCatalogService implements CatalogService {
     String tag,
     String order,
     int page,
-    int size
+    int size,
+    String searchText
   ) {
     var response = Mono.just(
       this.catalogClient.catalog()
         .size()
         .get(getRequestConfiguration -> {
           getRequestConfiguration.queryParameters.tags = tag;
+          getRequestConfiguration.queryParameters.searchText = searchText;
         })
     );
 
@@ -62,6 +64,7 @@ public class KiotaCatalogService implements CatalogService {
           getRequestConfiguration.queryParameters.page = page;
           getRequestConfiguration.queryParameters.size = size;
           getRequestConfiguration.queryParameters.tags = tag;
+          getRequestConfiguration.queryParameters.searchText = searchText;
         })
     )
       .map(mapper::product)

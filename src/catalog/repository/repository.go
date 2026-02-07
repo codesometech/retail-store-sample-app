@@ -17,8 +17,8 @@ type Database struct {
 }
 
 type CatalogRepository interface {
-	GetProducts(tags []string, order string, pageNum, pageSize int, ctx context.Context) ([]model.Product, error)
-	CountProducts(tags []string, ctx context.Context) (int, error)
+	GetProducts(tags []string, order string, pageNum, pageSize int, searchText string, ctx context.Context) ([]model.Product, error)
+	CountProducts(tags []string, searchText string, ctx context.Context) (int, error)
 	GetProduct(id string, ctx context.Context) (*model.Product, error)
 	GetTags(ctx context.Context) ([]model.Tag, error)
 }
@@ -106,7 +106,7 @@ func NewRepository(config config.DatabaseConfiguration) (CatalogRepository, erro
 	}, nil
 }
 
-func (db *Database) GetProducts(tags []string, order string, pageNum, pageSize int, ctx context.Context) ([]model.Product, error) {
+func (db *Database) GetProducts(tags []string, order string, pageNum, pageSize int, searchText string, ctx context.Context) ([]model.Product, error) {
 	products := []model.Product{}
 
 	query := db.DB.Preload("Tags")
@@ -117,6 +117,12 @@ func (db *Database) GetProducts(tags []string, order string, pageNum, pageSize i
 			Joins("JOIN tags ON tags.name = product_tags.tag_name").
 			Where("tags.name IN ?", tags).
 			Group("products.id")
+	}
+
+	// Apply search text filter if provided
+	if searchText != "" {
+		searchPattern := "%" + searchText + "%"
+		query = query.Where("name LIKE ? OR description LIKE ?", searchPattern, searchPattern)
 	}
 
 	// Apply ordering
@@ -157,7 +163,7 @@ func (db *Database) GetProduct(id string, ctx context.Context) (*model.Product, 
 	return &product, err
 }
 
-func (db *Database) CountProducts(tags []string, ctx context.Context) (int, error) {
+func (db *Database) CountProducts(tags []string, searchText string, ctx context.Context) (int, error) {
 	var count int64
 
 	query := db.DB.WithContext(ctx).Model(&model.Product{})
@@ -168,6 +174,12 @@ func (db *Database) CountProducts(tags []string, ctx context.Context) (int, erro
 			Joins("JOIN tags ON tags.name = product_tags.tag_name").
 			Where("tags.name IN ?", tags).
 			Group("products.id")
+	}
+
+	// Apply search text filter if provided
+	if searchText != "" {
+		searchPattern := "%" + searchText + "%"
+		query = query.Where("name LIKE ? OR description LIKE ?", searchPattern, searchPattern)
 	}
 
 	err := query.Count(&count).Error

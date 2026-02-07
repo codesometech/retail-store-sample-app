@@ -28,8 +28,8 @@ type CatalogAPI struct {
 	repository repository.CatalogRepository
 }
 
-func (a *CatalogAPI) GetProducts(tags []string, order string, pageNum, pageSize int, ctx context.Context) ([]model.Product, error) {
-	products, err := a.repository.GetProducts(tags, order, pageNum, pageSize, ctx)
+func (a *CatalogAPI) GetProducts(tags []string, order string, pageNum, pageSize int, searchText string, ctx context.Context) ([]model.Product, error) {
+	products, err := a.repository.GetProducts(tags, order, pageNum, pageSize, searchText, ctx)
 	if err != nil {
 		return nil, err
 	}
@@ -44,8 +44,8 @@ func (a *CatalogAPI) GetTags(ctx context.Context) ([]model.Tag, error) {
 	return a.repository.GetTags(ctx)
 }
 
-func (a *CatalogAPI) GetSize(tags []string, ctx context.Context) (int, error) {
-	return a.repository.CountProducts(tags, ctx)
+func (a *CatalogAPI) GetSize(tags []string, searchText string, ctx context.Context) (int, error) {
+	return a.repository.CountProducts(tags, searchText, ctx)
 }
 
 // NewCatalogAPI constructor

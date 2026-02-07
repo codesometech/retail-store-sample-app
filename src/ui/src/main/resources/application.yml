@@ -19,7 +19,7 @@ retail:
       checkout: # http://localhost:8085
       orders: # http://localhost:8083
     chat:
-      enabled: false
+      enabled: true
       temperature: 0.6
       max-tokens: 300
       provider: # mock
