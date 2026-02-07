@@ -1,0 +1,27 @@
+server:
+  port: ${PORT:8080}
+
+spring:
+  application:
+    name: catalog
+  datasource:
+    url: jdbc:postgresql://${RETAIL_CATALOG_PERSISTENCE_ENDPOINT:localhost:5432}/${RETAIL_CATALOG_PERSISTENCE_DB_NAME:catalogdb}
+    username: ${RETAIL_CATALOG_PERSISTENCE_USER:catalog_user}
+    password: ${RETAIL_CATALOG_PERSISTENCE_PASSWORD:postgres}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+  
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always

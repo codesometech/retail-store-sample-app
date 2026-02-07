@@ -1,0 +1,9 @@
+/Users/praveen/genai/retail-store-sample-app/src/catalog-java/src/main/java/com/amazon/sample/catalog/CatalogApplication.java
+/Users/praveen/genai/retail-store-sample-app/src/catalog-java/src/main/java/com/amazon/sample/catalog/config/DataInitializer.java
+/Users/praveen/genai/retail-store-sample-app/src/catalog-java/src/main/java/com/amazon/sample/catalog/controller/CatalogController.java
+/Users/praveen/genai/retail-store-sample-app/src/catalog-java/src/main/java/com/amazon/sample/catalog/model/CatalogSizeResponse.java
+/Users/praveen/genai/retail-store-sample-app/src/catalog-java/src/main/java/com/amazon/sample/catalog/model/Product.java
+/Users/praveen/genai/retail-store-sample-app/src/catalog-java/src/main/java/com/amazon/sample/catalog/model/Tag.java
+/Users/praveen/genai/retail-store-sample-app/src/catalog-java/src/main/java/com/amazon/sample/catalog/repository/ProductRepository.java
+/Users/praveen/genai/retail-store-sample-app/src/catalog-java/src/main/java/com/amazon/sample/catalog/repository/TagRepository.java
+/Users/praveen/genai/retail-store-sample-app/src/catalog-java/src/main/java/com/amazon/sample/catalog/service/CatalogService.java
