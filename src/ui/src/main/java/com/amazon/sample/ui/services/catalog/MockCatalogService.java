@@ -145,26 +145,18 @@ public class MockCatalogService implements CatalogService {
   @Override
   public Mono<ProductPage> getProducts(
     String tag,
+    String keyword,
     String order,
     int page,
-    int size,
-    String searchText
+    int size
   ) {
-    System.out.println("Tag is " + tag);
+    System.out.println("Tag is " + tag + ", Keyword is " + keyword);
     List<Product> productList =
       this.products.values()
         .stream()
         .sorted(Comparator.comparing(Product::getName))
         .filter(product -> tag.isBlank() || product.hasTag(tag))
-        .filter(product ->
-          searchText == null ||
-          searchText.isBlank() ||
-          product.getName().toLowerCase().contains(searchText.toLowerCase()) ||
-          product
-            .getDescription()
-            .toLowerCase()
-            .contains(searchText.toLowerCase())
-        )
+        .filter(product -> keyword.isBlank() || matchesKeyword(product, keyword))
         .collect(Collectors.toList());
 
     int end = page * size;
@@ -172,21 +164,21 @@ public class MockCatalogService implements CatalogService {
     if (end > productList.size()) {
       end = productList.size();
     }
-    
-    // Handle case where pagination is out of bounds due to filtering
-    int start = (page - 1) * size;
-    if (start >= productList.size()) {
-        return Mono.just(new ProductPage(page, size, productList.size(), List.of()));
-    }
 
     return Mono.just(
       new ProductPage(
         page,
         size,
         productList.size(),
-        productList.subList(start, end)
+        productList.subList((page - 1) * size, end)
       )
     );
+  }
+
+  private boolean matchesKeyword(Product product, String keyword) {
+    String lowercaseKeyword = keyword.toLowerCase();
+    return product.getName().toLowerCase().contains(lowercaseKeyword) ||
+           product.getDescription().toLowerCase().contains(lowercaseKeyword);
   }
 
   @Override

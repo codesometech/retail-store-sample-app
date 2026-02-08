@@ -25,7 +25,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public interface CatalogService {
-  Mono<ProductPage> getProducts(String tag, String order, int page, int size, String searchText);
+  Mono<ProductPage> getProducts(String tag, String keyword, String order, int page, int size);
 
   Mono<Product> getProduct(String productId);
 
