@@ -1,14 +1,35 @@
 server:
   port: ${PORT:8080}
 
-spring:
-  application:
-    name: catalog-java-os
-
 opensearch:
   endpoint: ${RETAIL_CATALOG_OPENSEARCH_ENDPOINT:localhost:9200}
   username: ${RETAIL_CATALOG_OPENSEARCH_USERNAME:admin}
-  password: ${RETAIL_CATALOG_OPENSEARCH_PASSWORD:Catalog#3695}
+  password: ${RETAIL_CATALOG_OPENSEARCH_PASSWORD:admin}
+
+spring:
+  ai:
+    bedrock:
+      aws:
+        region: ${AWS_REGION:us-east-1}
+        access-key: ${AWS_ACCESS_KEY_ID}
+        secret-key: ${AWS_SECRET_ACCESS_KEY}
+      titan:
+        embedding:
+          enabled: true
+      converse:
+        chat:
+          options:
+            model: global.anthropic.claude-sonnet-4-20250514-v1:0
+            max-tokens: 4096
+    vectorstore:
+      opensearch:
+        uris: http://${RETAIL_CATALOG_OPENSEARCH_ENDPOINT:localhost:9200}
+        username: ${RETAIL_CATALOG_OPENSEARCH_USERNAME:admin}
+        password: ${RETAIL_CATALOG_OPENSEARCH_PASSWORD:Catalog#3695}
+        index-name: products_vector
+        initialize-schema: true
+  application:
+    name: catalog-java-os
 
 #management:
 #  endpoints:

@@ -64,6 +64,11 @@ public class CatalogController {
         return ResponseEntity.ok(catalogService.getTags());
     }
 
+    @GetMapping("/products/vector-search")
+    public ResponseEntity<List<Product>> vectorSearch(@RequestParam String query) {
+        return ResponseEntity.ok(catalogService.searchProductsVector(query));
+    }
+
     private List<String> parseTags(String tags) {
         if (!StringUtils.hasText(tags)) {
             return Collections.emptyList();

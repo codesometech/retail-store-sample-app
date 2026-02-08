@@ -7,6 +7,8 @@ import com.amazon.sample.catalog.repository.TagRepository;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
+import org.springframework.ai.document.Document;
+import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,10 +26,10 @@ import java.util.stream.Collectors;
 public class DataInitializer {
 
     @Bean
-    public CommandLineRunner initData(ProductRepository productRepository, TagRepository tagRepository, ObjectMapper objectMapper) {
+    public CommandLineRunner initData(ProductRepository productRepository, TagRepository tagRepository, ObjectMapper objectMapper, VectorStore vectorStore) {
         return args -> {
             loadTags(tagRepository, objectMapper);
-            loadProducts(productRepository, tagRepository, objectMapper);
+            loadProducts(productRepository, tagRepository, objectMapper, vectorStore);
         };
     }
 
@@ -43,7 +45,7 @@ public class DataInitializer {
         }
     }
 
-    private void loadProducts(ProductRepository productRepository, TagRepository tagRepository, ObjectMapper objectMapper) throws IOException {
+    private void loadProducts(ProductRepository productRepository, TagRepository tagRepository, ObjectMapper objectMapper, VectorStore vectorStore) throws IOException {
         if (productRepository.count() > 0) {
             return;
         }
@@ -55,6 +57,8 @@ public class DataInitializer {
                     .collect(Collectors.toMap(Tag::getName, Function.identity()));
 
             List<Product> products = new ArrayList<>();
+            List<Document> documents = new ArrayList<>();
+
             for (ProductData data : productDataList) {
                 Product product = new Product();
                 product.setId(data.getId());
@@ -73,9 +77,18 @@ public class DataInitializer {
                 }
                 product.setTags(tags);
                 products.add(product);
+
+                // Create document for vector store
+                String content = "Name: " + product.getName() + "\nDescription: " + product.getDescription();
+                Map<String, Object> metadata = Map.of(
+                    "productId", product.getId(),
+                    "price", product.getPrice()
+                );
+                documents.add(new Document(product.getId(), content, metadata));
             }
             productRepository.saveAll(products);
-            System.out.println("Loaded " + products.size() + " products.");
+            vectorStore.add(documents);
+            System.out.println("Loaded " + products.size() + " products and vectors.");
         }
     }
     

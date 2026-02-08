@@ -6,6 +6,8 @@ import com.amazon.sample.catalog.repository.ProductRepository;
 import com.amazon.sample.catalog.repository.TagRepository;
 import org.opensearch.client.opensearch.core.SearchResponse;
 import org.opensearch.client.opensearch.core.search.Hit;
+import org.springframework.ai.vectorstore.SearchRequest;
+import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -22,13 +24,17 @@ public class CatalogService {
 
     private final ProductRepository productRepository;
     private final TagRepository tagRepository;
+    private final VectorStore vectorStore;
 
-    public CatalogService(ProductRepository productRepository, TagRepository tagRepository) {
+    public CatalogService(ProductRepository productRepository, TagRepository tagRepository, VectorStore vectorStore) {
         this.productRepository = productRepository;
         this.tagRepository = tagRepository;
+        this.vectorStore = vectorStore;
     }
 
     public Page<Product> getProducts(List<String> tags, String searchText, String order, int page, int size) {
+        // ... (existing implementation)
+
         String sortField = "name.keyword";
         String sortOrder = "Asc";
 
@@ -76,5 +82,15 @@ public class CatalogService {
         } catch (IOException e) {
              throw new RuntimeException("Error fetching tags", e);
         }
+    }
+
+    public List<Product> searchProductsVector(String query) {
+        return vectorStore.similaritySearch(SearchRequest.query(query).withTopK(10)).stream()
+                .map(doc -> {
+                    String productId = (String) doc.getMetadata().get("productId");
+                    return getProduct(productId).orElse(null);
+                })
+                .filter(p -> p != null)
+                .collect(Collectors.toList());
     }
 }
