@@ -145,16 +145,18 @@ public class MockCatalogService implements CatalogService {
   @Override
   public Mono<ProductPage> getProducts(
     String tag,
+    String keyword,
     String order,
     int page,
     int size
   ) {
-    System.out.println("Tag is " + tag);
+    System.out.println("Tag is " + tag + ", Keyword is " + keyword);
     List<Product> productList =
       this.products.values()
         .stream()
         .sorted(Comparator.comparing(Product::getName))
         .filter(product -> tag.isBlank() || product.hasTag(tag))
+        .filter(product -> keyword.isBlank() || matchesKeyword(product, keyword))
         .collect(Collectors.toList());
 
     int end = page * size;
@@ -171,6 +173,12 @@ public class MockCatalogService implements CatalogService {
         productList.subList((page - 1) * size, end)
       )
     );
+  }
+
+  private boolean matchesKeyword(Product product, String keyword) {
+    String lowercaseKeyword = keyword.toLowerCase();
+    return product.getName().toLowerCase().contains(lowercaseKeyword) ||
+           product.getDescription().toLowerCase().contains(lowercaseKeyword);
   }
 
   @Override

@@ -48,7 +48,7 @@ public class HomeController {
   public String home(final Model model, final ServerHttpRequest request) {
     model.addAttribute(
       "catalog",
-      this.catalogService.getProducts("", "", DEFAULT_PAGE, DEFAULT_SIZE)
+      this.catalogService.getProducts("", "", "", DEFAULT_PAGE, DEFAULT_SIZE)
     );
 
     return "home";

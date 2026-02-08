@@ -84,15 +84,15 @@ app:
     #orders: http://orders:80
     #checkout: http://checkout:80
   chat:
-    enabled: false
-    provider: ""
-    model: ""
+    enabled: true
+    provider: "bedrock"
+    model: "anthropic.claude-3-5-sonnet-20241022-v2:0"
     # temperature: 0.7
     # maxTokens: 300
     # prompt: |
     #   This will override the default system prompt
     bedrock:
-      region: ""
+      region: "us-east-1"
     openai:
       baseUrl: ""
       # apiKey: ""
@@ -113,14 +113,6 @@ ingress:
   #  - "chart-example.local"
 
 ingresses: []
-  # - name: default
-  #   className: ""
-  #   hosts: []
-  #   annotations: {}
-  #   tls: []
-
-ingresses:
-  []
   # - name: default
   #   className: ""
   #   hosts: []

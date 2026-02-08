@@ -50,6 +50,7 @@ public class CatalogController {
   @GetMapping("")
   public String catalog(
     @RequestParam(required = false, defaultValue = "") String tag,
+    @RequestParam(required = false, defaultValue = "") String keyword,
     @RequestParam(required = false, defaultValue = "1") int page,
     @RequestParam(required = false, defaultValue = "6") int size,
     ServerHttpRequest request,
@@ -57,10 +58,11 @@ public class CatalogController {
   ) {
     model.addAttribute("tags", this.catalogService.getTags());
     model.addAttribute("selectedTag", tag);
+    model.addAttribute("searchKeyword", keyword);
 
     model.addAttribute(
       "catalog",
-      catalogService.getProducts(tag, "", page, size)
+      catalogService.getProducts(tag, keyword, "", page, size)
     );
 
     return "catalog";
@@ -76,7 +78,7 @@ public class CatalogController {
     model.addAttribute(
       "recommendations",
       catalogService
-        .getProducts("", "", DEFAULT_PAGE, DEFAULT_SIZE)
+        .getProducts("", "", "", DEFAULT_PAGE, DEFAULT_SIZE)
         .map(p -> {
           Collections.shuffle(p.getProducts());
           return p.getProducts();

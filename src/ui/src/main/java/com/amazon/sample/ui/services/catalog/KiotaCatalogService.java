@@ -42,6 +42,7 @@ public class KiotaCatalogService implements CatalogService {
   @Override
   public Mono<ProductPage> getProducts(
     String tag,
+    String keyword,
     String order,
     int page,
     int size
