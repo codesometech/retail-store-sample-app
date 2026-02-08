@@ -1,0 +1,40 @@
+{
+  "name": "catalog-java-os",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "sourceRoot": "src/catalog-java-os",
+  "targets": {
+    "build": {
+      "executor": "nx:run-commands",
+      "cache": true,
+      "inputs": ["{projectRoot}/src/**/*", "{projectRoot}/pom.xml"],
+      "outputs": ["{projectRoot}/target/*.jar"],
+      "options": {
+        "command": "./mvnw --no-transfer-progress -DskipTests package"
+      }
+    },
+    "test": {
+      "executor": "nx:run-commands",
+      "dependsOn": ["build"],
+      "cache": true,
+      "inputs": ["{projectRoot}/src/**/*", "{projectRoot}/pom.xml"],
+      "options": {
+        "command": "./mvnw test"
+      }
+    },
+    "lint": {
+      "executor": "nx:run-commands",
+      "dependsOn": ["build"],
+      "options": {
+        "command": "./mvnw checkstyle:checkstyle"
+      }
+    },
+    "serve": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "./mvnw spring-boot:run"
+      }
+    }
+  },
+  "tags": ["service"]
+}

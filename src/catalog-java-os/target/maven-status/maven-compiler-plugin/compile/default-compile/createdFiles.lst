@@ -1,0 +1,13 @@
+com/amazon/sample/catalog/config/OpenSearchConfig.class
+com/amazon/sample/catalog/model/Product.class
+com/amazon/sample/catalog/config/DataInitializer.class
+com/amazon/sample/catalog/controller/CatalogController.class
+com/amazon/sample/catalog/config/DataInitializer$1.class
+com/amazon/sample/catalog/model/CatalogSizeResponse.class
+com/amazon/sample/catalog/repository/ProductRepository.class
+com/amazon/sample/catalog/repository/TagRepository.class
+com/amazon/sample/catalog/config/DataInitializer$2.class
+com/amazon/sample/catalog/config/DataInitializer$ProductData.class
+com/amazon/sample/catalog/service/CatalogService.class
+com/amazon/sample/catalog/model/Tag.class
+com/amazon/sample/catalog/CatalogApplication.class
