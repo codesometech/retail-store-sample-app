@@ -86,4 +86,20 @@ public class CatalogController {
 
     return "detail";
   }
+
+  @GetMapping("/search")
+  public String catalogSearch(
+          @RequestParam(required = true, defaultValue = "") String keyword,
+          ServerHttpRequest request,
+          Model model
+  ) {
+    model.addAttribute("keyword", keyword);
+
+    model.addAttribute(
+            "catalog",
+            catalogService.catalogSearch(keyword)
+    );
+
+    return "catalog";
+  }
 }

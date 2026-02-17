@@ -182,4 +182,9 @@ public class MockCatalogService implements CatalogService {
   public Flux<ProductTag> getTags() {
     return Flux.fromIterable(this.tags.values());
   }
+
+  @Override
+  public Mono<ProductPage> catalogSearch(String keyword) {
+    return null;
+  }
 }

@@ -1,8 +1,8 @@
 {
-  "descriptionHash": "13E23AD44E2FAD9459E12B4C4169EE9B5CEC0BC83ECFBD69FA4446AD46FCC0445FF1F28108C205432A94D05C18C0DF4480DE968C8AB6A7FDF45AFEE076D9ACB9",
+  "descriptionHash": "31705D91ADE958F7C59DED813E9B57269ED63B213579EE87D2BCC779E7540D2A31616BE37DFFBE7F8CFD3AC2655B1CAA957453096231652BC56642EC4F079B48",
   "descriptionLocation": "../../../../../../../../../../catalog/openapi.yml",
   "lockFileVersion": "1.0.0",
-  "kiotaVersion": "1.21.0",
+  "kiotaVersion": "1.30.0",
   "clientClassName": "CatalogClient",
   "typeAccessModifier": "Public",
   "clientNamespaceName": "com.amazon.sample.ui.client.catalog",
@@ -14,7 +14,9 @@
   "serializers": [
     "com.microsoft.kiota.serialization.JsonSerializationWriterFactory"
   ],
-  "deserializers": ["com.microsoft.kiota.serialization.JsonParseNodeFactory"],
+  "deserializers": [
+    "com.microsoft.kiota.serialization.JsonParseNodeFactory"
+  ],
   "structuredMimeTypes": [
     "application/json",
     "text/plain;q=0.9",
