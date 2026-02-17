@@ -83,6 +83,15 @@ app:
       name: catalog-db
       username: catalog
       password: ""
+  
+  search:
+    enabled: false
+
+    configMap:
+      name: catalog-os
+    
+    secret:
+      name: catalog-os
 
 mysql:
   create: false

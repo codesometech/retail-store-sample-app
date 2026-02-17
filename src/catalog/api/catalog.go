@@ -26,6 +26,7 @@ import (
 // CatalogAPI type
 type CatalogAPI struct {
 	repository repository.CatalogRepository
+	searchRepository repository.SearchRepository
 }
 
 func (a *CatalogAPI) GetProducts(tags []string, order string, pageNum, pageSize int, ctx context.Context) ([]model.Product, error) {
@@ -48,9 +49,17 @@ func (a *CatalogAPI) GetSize(tags []string, ctx context.Context) (int, error) {
 	return a.repository.CountProducts(tags, ctx)
 }
 
+func (a *CatalogAPI) SearchProducts(keyword string, ctx context.Context) ([]model.Product, error) {
+	if a.searchRepository == nil {
+		return nil, nil
+	}
+	return a.searchRepository.SearchProducts(keyword, ctx)
+}
+
 // NewCatalogAPI constructor
-func NewCatalogAPI(repository repository.CatalogRepository) (*CatalogAPI, error) {
+func NewCatalogAPI(repository repository.CatalogRepository, searchRepository repository.SearchRepository) (*CatalogAPI, error) {
 	return &CatalogAPI{
 		repository: repository,
+		searchRepository: searchRepository,
 	}, nil
 }

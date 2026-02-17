@@ -20,6 +20,7 @@ package config
 type AppConfiguration struct {
 	Port     int `env:"PORT,default=8080"`
 	Database DatabaseConfiguration
+	OpenSearch OpenSearchConfiguration
 }
 
 // DatabaseConfiguration exported
@@ -30,4 +31,13 @@ type DatabaseConfiguration struct {
 	User           string `env:"RETAIL_CATALOG_PERSISTENCE_USER,default=catalog_user"`
 	Password       string `env:"RETAIL_CATALOG_PERSISTENCE_PASSWORD"`
 	ConnectTimeout int    `env:"RETAIL_CATALOG_PERSISTENCE_CONNECT_TIMEOUT,default=5"`
+}
+
+// OpenSearchConfiguration exported
+type OpenSearchConfiguration struct {
+	Enabled   bool   `env:"RETAIL_CATALOG_OPENSEARCH_ENABLED,default=false"`
+	Endpoint  string `env:"RETAIL_CATALOG_OPENSEARCH_ENDPOINT,default=http://localhost:9200"`
+	IndexName string `env:"RETAIL_CATALOG_OPENSEARCH_INDEX,default=products"`
+	Username  string `env:"RETAIL_CATALOG_OPENSEARCH_USERNAME,default=catalog_search"`
+	Password  string `env:"RETAIL_CATALOG_OPENSEARCH_PASSWORD"`
 }

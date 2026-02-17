@@ -1,8 +1,9 @@
 # AWS Containers Retail Sample - Catalog Service
 
-| Language | Persistence |
-| -------- | ----------- |
-| Go       | MySQL       |
+| Language | Persistence | Search     |
+| -------- | ----------- |------------|
+| Go       | MySQL       | OpenSearch |
+
 
 This service provides an API for retrieving product catalog information. Data is stored in a MySQL database.
 
@@ -10,15 +11,21 @@ This service provides an API for retrieving product catalog information. Data is
 
 The following environment variables are available for configuring the service:
 
-| Name                                       | Description                                                     | Default        |
-| ------------------------------------------ | --------------------------------------------------------------- | -------------- |
-| PORT                                       | The port which the server will listen on                        | `8080`         |
-| RETAIL_CATALOG_PERSISTENCE_PROVIDER        | The persistence provider to use, can be `in-memory` or `mysql`. | `in-memory`    |
-| RETAIL_CATALOG_PERSISTENCE_ENDPOINT        | Database endpoint URL                                           | `""`           |
-| RETAIL_CATALOG_PERSISTENCE_DB_NAME         | Database name                                                   | `catalogdb`    |
-| RETAIL_CATALOG_PERSISTENCE_USER            | Database user                                                   | `catalog_user` |
-| RETAIL_CATALOG_PERSISTENCE_PASSWORD        | Database password                                               | `""`           |
-| RETAIL_CATALOG_PERSISTENCE_CONNECT_TIMEOUT | Database connection timeout in seconds                          | `5`            |
+| Name                                       | Description                                                          | Default        |
+| ------------------------------------------ | -------------------------------------------------------------------- | -------------- |
+| PORT                                       | The port which the server will listen on                             | `8080`         |
+| RETAIL_CATALOG_PERSISTENCE_PROVIDER        | The persistence provider to use, can be `in-memory` or `mysql`.      | `in-memory`    |
+| RETAIL_CATALOG_PERSISTENCE_ENDPOINT        | Database endpoint URL                                                | `""`           |
+| RETAIL_CATALOG_PERSISTENCE_DB_NAME         | Database name                                                        | `catalogdb`    |
+| RETAIL_CATALOG_PERSISTENCE_USER            | Database user                                                        | `catalog_user` |
+| RETAIL_CATALOG_PERSISTENCE_PASSWORD        | Database password                                                    | `""`           |
+| RETAIL_CATALOG_PERSISTENCE_CONNECT_TIMEOUT | Database connection timeout in seconds                               | `5`            |
+| RETAIL_CATALOG_SEARCH_PROVIDER             | The search provider to use, can be `opensearch` or `aws_opensearch`. | `opensearch`   |
+| RETAIL_CATALOG_SEARCH_ENDPOINT             | Database endpoint URL                                                | `""`           |
+| RETAIL_CATALOG_SEARCH_DB_NAME              | Index name                                                           | `products`     |
+| RETAIL_CATALOG_SEARCH_USER                 | Opensearch user                                                      | `catalog`      |
+| RETAIL_CATALOG_SEARCH_PASSWORD             | Opensearch password                                                  | `""`           |
+| RETAIL_CATALOG_SEARCH_CONNECT_TIMEOUT      | Opensearch connection timeout in seconds                             | `5`            |
 
 ## Endpoints
 

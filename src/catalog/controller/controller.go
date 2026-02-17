@@ -17,6 +17,7 @@
 package controller
 
 import (
+	"fmt"
 	"net/http"
 	"strconv"
 	"strings"
@@ -159,6 +160,40 @@ func (c *Controller) ListTags(ctx *gin.Context) {
 		return
 	}
 	ctx.JSON(http.StatusOK, accounts)
+}
+
+// SearchProducts godoc
+// @Summary Search products
+// @Description Search products by keyword using OpenSearch
+// @Tags catalog
+// @Accept  json
+// @Produce  json
+// @Param keyword query string true "Search keyword"
+// @Success 200 {array} model.Product
+// @Failure 400 {object} httputil.HTTPError
+// @Failure 404 {object} httputil.HTTPError
+// @Failure 500 {object} httputil.HTTPError
+// @Router /catalog/search [get]
+func (c *Controller) SearchProducts(ctx *gin.Context) {
+	keyword := ctx.Query("keyword")
+
+	if keyword == "" {
+		httputil.NewError(ctx, http.StatusBadRequest, fmt.Errorf("keyword query parameter is required"))
+		return
+	}
+
+	products, err := c.api.SearchProducts(keyword, ctx.Request.Context())
+	if err != nil {
+		httputil.NewError(ctx, http.StatusInternalServerError, err)
+		return
+	}
+
+	if products == nil {
+		httputil.NewError(ctx, http.StatusServiceUnavailable, fmt.Errorf("search service is not available"))
+		return
+	}
+
+	ctx.JSON(http.StatusOK, products)
 }
 
 func getQueryInt(name string, defaultValue int, ctx *gin.Context) (int, error) {
