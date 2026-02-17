@@ -35,7 +35,7 @@
     <!-- Product Grid -->
     <div class="flex-1">
       <!-- Search Bar -->
-      <div class="mb-6">
+      <div class="mb-6" th:if="${searchEnabled}">
         <form method="GET" th:action="@{/catalog/search}" class="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
           <div class="relative flex-1 max-w-md">
             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -56,7 +56,7 @@
             Search
           </button>
           <a
-                  th:if="${searchKeyword != null && !searchKeyword.isEmpty()}"
+                  th:if="${keyword != null && !keyword.isEmpty()}"
                   th:href="@{/catalog(tag=${selectedTag})}"
                   class="px-4 py-2 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-colors"
           >
@@ -65,8 +65,8 @@
         </form>
 
         <!-- Search Results Info -->
-        <div th:if="${searchKeyword != null && !searchKeyword.isEmpty()}" class="mt-3 text-sm text-gray-600">
-          <span th:text="'Showing results for &quot;' + ${searchKeyword} + '&quot; (' + ${catalog.totalRecords} + ' products found)'"></span>
+        <div th:if="${keyword != null && !keyword.isEmpty()}" class="mt-3 text-sm text-gray-600">
+          <span th:text="'Showing results for &quot;' + ${keyword} + '&quot; (' + ${catalog.totalRecords} + ' products found)'"></span>
         </div>
       </div>
 
@@ -98,7 +98,7 @@
         >
           <a
                   href="#"
-                  th:href="@{/catalog(page=${prevIndex},tag=${selectedTag},keyword=${searchKeyword})}"
+                  th:href="@{/catalog(page=${prevIndex},tag=${selectedTag},keyword=${keyword})}"
           >
             <button
                     class="inline-flex items-center justify-center w-10 h-10 border-r border-gray-200 text-gray-500 hover:bg-gray-50"
@@ -110,7 +110,7 @@
           <a
                   href="#"
                   th:each="i : ${#numbers.sequence(1, catalog.totalPages)}"
-                  th:href="@{/catalog(page=${i},tag=${selectedTag},keyword=${searchKeyword})}"
+                  th:href="@{/catalog(page=${i},tag=${selectedTag},keyword=${keyword})}"
           >
             <button
                     class="inline-flex items-center justify-center w-10 h-10 border-r border-gray-200"
@@ -123,7 +123,7 @@
 
           <a
                   href="#"
-                  th:href="@{/catalog(page=${nextIndex},tag=${selectedTag},keyword=${searchKeyword})}"
+                  th:href="@{/catalog(page=${nextIndex},tag=${selectedTag},keyword=${keyword})}"
           >
             <button
                     class="inline-flex items-center justify-center w-10 h-10 text-gray-500 hover:bg-gray-50"

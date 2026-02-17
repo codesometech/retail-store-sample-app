@@ -185,6 +185,26 @@ public class MockCatalogService implements CatalogService {
 
   @Override
   public Mono<ProductPage> catalogSearch(String keyword) {
-    return null;
+    List<Product> matchingProducts = this.products.values()
+      .stream()
+      .filter(product -> {
+        if (keyword == null || keyword.isBlank()) {
+          return true;
+        }
+        String lowerKeyword = keyword.toLowerCase();
+        return product.getName().toLowerCase().contains(lowerKeyword) ||
+               product.getDescription().toLowerCase().contains(lowerKeyword);
+      })
+      .sorted(Comparator.comparing(Product::getName))
+      .collect(Collectors.toList());
+
+    return Mono.just(
+      new ProductPage(
+        1,
+        matchingProducts.size(),
+        matchingProducts.size(),
+        matchingProducts
+      )
+    );
   }
 }
