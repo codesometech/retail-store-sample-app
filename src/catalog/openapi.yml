@@ -77,6 +77,16 @@ paths:
           description: Search text for catalog
           schema:
             type: string
+        - name: page
+          in: query
+          description: Page number
+          schema:
+            type: integer
+        - name: size
+          in: query
+          description: Page size
+          schema:
+            type: integer
       responses:
         "200":
           description: OK

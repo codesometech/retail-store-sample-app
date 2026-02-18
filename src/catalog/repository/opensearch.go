@@ -33,7 +33,7 @@ import (
 
 // SearchRepository interface for search operations
 type SearchRepository interface {
-	SearchProducts(keyword string, ctx context.Context) ([]model.Product, error)
+	SearchProducts(keyword string, page, size int, ctx context.Context) ([]model.Product, error)
 }
 
 // OpenSearchRepository implements SearchRepository
@@ -223,8 +223,11 @@ func (r *OpenSearchRepository) InitializeData() error {
 	return nil
 }
 
-// SearchProducts searches for products matching the keyword
-func (r *OpenSearchRepository) SearchProducts(keyword string, ctx context.Context) ([]model.Product, error) {
+// SearchProducts searches for products matching the keyword with pagination
+func (r *OpenSearchRepository) SearchProducts(keyword string, page, size int, ctx context.Context) ([]model.Product, error) {
+	// Calculate offset for pagination
+	from := (page - 1) * size
+
 	// Build the search query
 	query := map[string]interface{}{
 		"query": map[string]interface{}{
@@ -234,7 +237,8 @@ func (r *OpenSearchRepository) SearchProducts(keyword string, ctx context.Contex
 				"fuzziness": "AUTO",
 			},
 		},
-		"size": 100,
+		"from": from,
+		"size": size,
 	}
 
 	queryJSON, err := json.Marshal(query)

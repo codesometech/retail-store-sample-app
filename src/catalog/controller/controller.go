@@ -169,6 +169,8 @@ func (c *Controller) ListTags(ctx *gin.Context) {
 // @Accept  json
 // @Produce  json
 // @Param keyword query string true "Search keyword"
+// @Param page query int false "Page number"
+// @Param size query int false "Page size"
 // @Success 200 {array} model.Product
 // @Failure 400 {object} httputil.HTTPError
 // @Failure 404 {object} httputil.HTTPError
@@ -182,7 +184,19 @@ func (c *Controller) SearchProducts(ctx *gin.Context) {
 		return
 	}
 
-	products, err := c.api.SearchProducts(keyword, ctx.Request.Context())
+	page, err := getQueryInt("page", 1, ctx)
+	if err != nil {
+		httputil.NewError(ctx, http.StatusBadRequest, err)
+		return
+	}
+
+	size, err := getQueryInt("size", 10, ctx)
+	if err != nil {
+		httputil.NewError(ctx, http.StatusBadRequest, err)
+		return
+	}
+
+	products, err := c.api.SearchProducts(keyword, page, size, ctx.Request.Context())
 	if err != nil {
 		httputil.NewError(ctx, http.StatusInternalServerError, err)
 		return

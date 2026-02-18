@@ -49,11 +49,11 @@ func (a *CatalogAPI) GetSize(tags []string, ctx context.Context) (int, error) {
 	return a.repository.CountProducts(tags, ctx)
 }
 
-func (a *CatalogAPI) SearchProducts(keyword string, ctx context.Context) ([]model.Product, error) {
+func (a *CatalogAPI) SearchProducts(keyword string, page, size int, ctx context.Context) ([]model.Product, error) {
 	if a.searchRepository == nil {
 		return nil, nil
 	}
-	return a.searchRepository.SearchProducts(keyword, ctx)
+	return a.searchRepository.SearchProducts(keyword, page, size, ctx)
 }
 
 // NewCatalogAPI constructor
