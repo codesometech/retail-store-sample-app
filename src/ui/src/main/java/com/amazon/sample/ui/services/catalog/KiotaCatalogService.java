@@ -84,16 +84,18 @@ public class KiotaCatalogService implements CatalogService {
   }
 
   @Override
-  public Mono<ProductPage> catalogSearch(String keyword) {
+  public Mono<ProductPage> catalogSearch(String keyword, int page, int size) {
         return Flux.fromIterable(
                 this.catalogClient.catalog()
                         .search()
                         .get(getRequestConfiguration -> {
                             getRequestConfiguration.queryParameters.keyword = keyword;
+                            getRequestConfiguration.queryParameters.page = page;
+                            getRequestConfiguration.queryParameters.size = size;
                         })
                 )
                 .map(mapper::product)
                 .collectList()
-                .map(p -> new ProductPage(1, p.size(), p.size(), p));
+                .map(p -> new ProductPage(page, size, p.size(), p));
     }
 }

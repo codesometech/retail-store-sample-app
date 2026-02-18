@@ -94,6 +94,8 @@ public class CatalogController {
   @GetMapping("/search")
   public String catalogSearch(
           @RequestParam(required = true, defaultValue = "") String keyword,
+          @RequestParam(required = false, defaultValue = "1") int page,
+          @RequestParam(required = false, defaultValue = "6") int size,
           ServerHttpRequest request,
           Model model
   ) {
@@ -101,7 +103,7 @@ public class CatalogController {
     model.addAttribute("searchEnabled", searchEnabled);
     model.addAttribute(
             "catalog",
-            catalogService.catalogSearch(keyword)
+            catalogService.catalogSearch(keyword, page, size)
     );
 
     return "catalog";

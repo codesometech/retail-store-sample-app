@@ -184,7 +184,7 @@ public class MockCatalogService implements CatalogService {
   }
 
   @Override
-  public Mono<ProductPage> catalogSearch(String keyword) {
+  public Mono<ProductPage> catalogSearch(String keyword, int page, int size) {
     List<Product> matchingProducts = this.products.values()
       .stream()
       .filter(product -> {
@@ -200,8 +200,8 @@ public class MockCatalogService implements CatalogService {
 
     return Mono.just(
       new ProductPage(
-        1,
-        matchingProducts.size(),
+        page,
+        size,
         matchingProducts.size(),
         matchingProducts
       )

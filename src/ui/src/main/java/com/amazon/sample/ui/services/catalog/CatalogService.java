@@ -27,7 +27,7 @@ import reactor.core.publisher.Mono;
 public interface CatalogService {
   Mono<ProductPage> getProducts(String tag, String order, int page, int size);
 
-  Mono<ProductPage> catalogSearch(String keyword);
+  Mono<ProductPage> catalogSearch(String keyword, int page, int size);
 
   Mono<Product> getProduct(String productId);
 

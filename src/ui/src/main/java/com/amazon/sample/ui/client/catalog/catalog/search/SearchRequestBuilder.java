@@ -26,7 +26,7 @@ public class SearchRequestBuilder extends BaseRequestBuilder {
      * @param requestAdapter The request adapter to use to execute the requests.
      */
     public SearchRequestBuilder(@jakarta.annotation.Nonnull final HashMap<String, Object> pathParameters, @jakarta.annotation.Nonnull final RequestAdapter requestAdapter) {
-        super(requestAdapter, "{+baseurl}/catalog/search{?keyword*}", pathParameters);
+        super(requestAdapter, "{+baseurl}/catalog/search{?keyword*,page*,size*}", pathParameters);
     }
     /**
      * Instantiates a new {@link SearchRequestBuilder} and sets the default values.
@@ -34,7 +34,7 @@ public class SearchRequestBuilder extends BaseRequestBuilder {
      * @param requestAdapter The request adapter to use to execute the requests.
      */
     public SearchRequestBuilder(@jakarta.annotation.Nonnull final String rawUrl, @jakarta.annotation.Nonnull final RequestAdapter requestAdapter) {
-        super(requestAdapter, "{+baseurl}/catalog/search{?keyword*}", rawUrl);
+        super(requestAdapter, "{+baseurl}/catalog/search{?keyword*,page*,size*}", rawUrl);
     }
     /**
      * Catalog search
@@ -105,6 +105,16 @@ public class SearchRequestBuilder extends BaseRequestBuilder {
         @jakarta.annotation.Nullable
         public String keyword;
         /**
+         * Page number
+         */
+        @jakarta.annotation.Nullable
+        public Integer page;
+        /**
+         * Page size
+         */
+        @jakarta.annotation.Nullable
+        public Integer size;
+        /**
          * Extracts the query parameters into a map for the URI template parsing.
          * @return a {@link Map<String, Object>}
          */
@@ -112,6 +122,8 @@ public class SearchRequestBuilder extends BaseRequestBuilder {
         public Map<String, Object> toQueryParameters() {
             final Map<String, Object> allQueryParams = new HashMap();
             allQueryParams.put("keyword", keyword);
+            allQueryParams.put("page", page);
+            allQueryParams.put("size", size);
             return allQueryParams;
         }
     }
