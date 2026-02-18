@@ -198,12 +198,22 @@ public class MockCatalogService implements CatalogService {
       .sorted(Comparator.comparing(Product::getName))
       .collect(Collectors.toList());
 
+    int start = (page - 1) * size;
+    int end = page * size;
+
+    if (start >= matchingProducts.size()) {
+      start = matchingProducts.size();
+    }
+    if (end > matchingProducts.size()) {
+      end = matchingProducts.size();
+    }
+
     return Mono.just(
       new ProductPage(
         page,
         size,
         matchingProducts.size(),
-        matchingProducts
+        matchingProducts.subList(start, end)
       )
     );
   }
