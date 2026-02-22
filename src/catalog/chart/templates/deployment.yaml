@@ -43,9 +43,17 @@ spec:
           envFrom:
             - configMapRef:
                 name: {{ include "catalog.configMapName" . }}
+            {{- if .Values.app.search.enabled }}
+            - configMapRef:
+                name: {{ .Values.app.search.configMap.name }}
+            {{- end }}
             {{- if (eq "mysql" .Values.app.persistence.provider) }}
             - secretRef:
                 name: {{ .Values.app.persistence.secret.name }}
+            {{- end }}
+            {{- if .Values.app.search.enabled }}
+            - secretRef:
+                name: {{ .Values.app.search.secret.name }}
             {{- end }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}

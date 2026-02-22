@@ -35,9 +35,11 @@ module "dependencies" {
   vpc_id     = module.vpc.inner.vpc_id
   subnet_ids = module.vpc.inner.private_subnets
 
-  catalog_security_group_id  = local.security_groups_active ? aws_security_group.catalog.id : module.retail_app_eks.node_security_group_id
-  orders_security_group_id   = local.security_groups_active ? aws_security_group.orders.id : module.retail_app_eks.node_security_group_id
-  checkout_security_group_id = local.security_groups_active ? aws_security_group.checkout.id : module.retail_app_eks.node_security_group_id
+  catalog_security_group_id            = local.security_groups_active ? aws_security_group.catalog.id : module.retail_app_eks.node_security_group_id
+  orders_security_group_id             = local.security_groups_active ? aws_security_group.orders.id : module.retail_app_eks.node_security_group_id
+  checkout_security_group_id           = local.security_groups_active ? aws_security_group.checkout.id : module.retail_app_eks.node_security_group_id
+  catalog_opensearch_security_group_id = local.security_groups_active ? aws_security_group.catalog.id : module.retail_app_eks.node_security_group_id
+  catalog_search_enabled               = var.search_enabled
 }
 
 module "retail_app_eks" {

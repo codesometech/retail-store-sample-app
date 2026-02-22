@@ -39,3 +39,14 @@ variable "allowed_security_group_ids" {
   default     = []
   description = "List of additional allowed security group IDs"
 }
+
+variable "catalog_opensearch_security_group_id" {
+  type        = string
+  description = "Security group ID for the catalog OpenSearch domain"
+}
+
+variable "catalog_search_enabled" {
+  type        = bool
+  description = "Boolean value that enables catalog OpenSearch functionality"
+  default     = false
+}

@@ -86,7 +86,10 @@ app:
   
   search:
     enabled: false
-
+    endpoint: ""
+    index: products
+    username: catalog
+    password: ""
     configMap:
       name: catalog-os
     

@@ -16,6 +16,12 @@ variable "opentelemetry_enabled" {
   default     = false
 }
 
+variable "search_enabled" {
+  description = "Boolean value that enables Search functionality."
+  type        = bool
+  default     = false
+}
+
 variable "container_image_overrides" {
   type = object({
     default_repository = optional(string)
