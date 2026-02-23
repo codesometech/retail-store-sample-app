@@ -20,7 +20,7 @@ The following environment variables are available for configuring the service:
 | RETAIL_CATALOG_PERSISTENCE_USER            | Database user                                                        | `catalog_user` |
 | RETAIL_CATALOG_PERSISTENCE_PASSWORD        | Database password                                                    | `""`           |
 | RETAIL_CATALOG_PERSISTENCE_CONNECT_TIMEOUT | Database connection timeout in seconds                               | `5`            |
-| RETAIL_CATALOG_SEARCH_PROVIDER             | The search provider to use, can be `opensearch` or `aws_opensearch`. | `opensearch`   |
+| RETAIL_CATALOG_OPENSEARCH_ENABLED          | Enable or disable search                                             | `false`        |
 | RETAIL_CATALOG_SEARCH_ENDPOINT             | Database endpoint URL                                                | `""`           |
 | RETAIL_CATALOG_SEARCH_DB_NAME              | Index name                                                           | `products`     |
 | RETAIL_CATALOG_SEARCH_USER                 | Opensearch user                                                      | `catalog`      |
