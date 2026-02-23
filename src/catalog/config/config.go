@@ -38,6 +38,6 @@ type OpenSearchConfiguration struct {
 	Enabled   bool   `env:"RETAIL_CATALOG_OPENSEARCH_ENABLED,default=false"`
 	Endpoint  string `env:"RETAIL_CATALOG_OPENSEARCH_ENDPOINT,default=http://localhost:9200"`
 	IndexName string `env:"RETAIL_CATALOG_OPENSEARCH_INDEX,default=products"`
-	Username  string `env:"RETAIL_CATALOG_OPENSEARCH_USERNAME,default=catalog_search"`
+	Username  string `env:"RETAIL_CATALOG_OPENSEARCH_USERNAME,default=catalog"`
 	Password  string `env:"RETAIL_CATALOG_OPENSEARCH_PASSWORD"`
 }
